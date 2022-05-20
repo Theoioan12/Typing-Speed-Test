@@ -1,0 +1,53 @@
+int i, linePos;
+    linePos = yMax / 4;
+    wmove(stdscr, linePos, 10);
+    for(i = 0; i < wListSearch[currentPos].pContent_len; i++){
+        if(wListSearch[currentPos].pContent[i] == '\n')
+            wmove(stdscr, ++linePos, 10);
+        else
+            wprintw(stdscr, "%c", wListSearch[currentPos].pContent[i]);
+    }
+
+
+void print(){
+    int yMax, xMax;
+    getmaxyx(stdscr, yMax, xMax);
+    mvwprintw(stdscr, yMax / 4, xMax / 2 - 12, ".:|| Website Finder ||:.");
+    mvwprintw(stdscr, yMax / 4 + 3, xMax / 2 - 12, ".:|| Website Finder ||:.");
+}
+
+int main(){
+    
+    time(NULL);
+    time_t a;
+    
+    /*
+    initscr();
+    curs_set(1);
+    noecho();
+    start_color();
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
+    attron(COLOR_PAIR(1));
+    box(stdscr, 0, 0);
+    print();
+    int x = getch();
+    attron(COLOR_PAIR(2));
+    for(int i = 0; i < 20; i++){
+        int x = getch();
+        printw("%c ", x);
+        attron(COLOR_PAIR(1));
+        x = getch();
+        printw("%c ", x);
+        x = getch();
+        printw("%c ", x);
+        attron(COLOR_PAIR(2));
+        x = getch();
+        printw("%c ", x);
+        x = getch();
+        printw("%c ", x);
+    }
+    endwin();
+    */
+    return 0;
+}
