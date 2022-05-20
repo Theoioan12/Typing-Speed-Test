@@ -27,10 +27,12 @@ void NCURSES_init(){
     noecho();
     // Initialize color
     start_color();
+    // Default color pair
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);
     // Right color pair
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
     // Wrong color pair
-    init_pair(2, COLOR_WHITE, COLOR_RED);
+    init_pair(3, COLOR_WHITE, COLOR_RED);
 }
 /* Free ncruses screen */
 void NCURSES_free(){

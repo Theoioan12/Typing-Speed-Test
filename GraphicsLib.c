@@ -6,7 +6,7 @@ void GL_Menu(){
     // Clear stdscr
     clear();
     // Set color to default
-    attron(COLOR_PAIR(0));
+    attron(COLOR_PAIR(1));
     // Print border
     box(stdscr, 0, 0);
     // Get screen size
@@ -24,14 +24,18 @@ void GL_Play(GameData *paragraph){
     // Clear stdscr
     clear();
     // Set color to default
-    attron(COLOR_PAIR(0));
+    attron(COLOR_PAIR(1));
     // Print border
     box(stdscr, 0, 0); // Might remove!
     // Get screen size
     getmaxyx(stdscr, yMax, xMax);
     // Go to the starting printing point
-    move(10, 10);
+    move(yMax / 5, xMax / 10);
     for(i = 0; i < len; i++){
         printw("%c", paragraph->text[i].ch);
+        if(i == 50)
+            attron(COLOR_PAIR(2));
+        if(i == 100)
+            attron(COLOR_PAIR(3));
     }
 }
