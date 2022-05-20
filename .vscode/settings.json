@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "graphicslib.h": "c"
+        "graphicslib.h": "c",
+        "inttypes.h": "c",
+        "stdlib.h": "c"
     }
 }

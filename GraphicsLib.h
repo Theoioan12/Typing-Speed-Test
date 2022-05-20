@@ -7,9 +7,8 @@
     #include <time.h>
     #include <ncurses.h>
 
-    #define DATABASE "database.txt"
+    #define DATABASE_NAME "database.txt"
     #define ENTER 10
-    #define ESC 27
     #define WHITESPACE 32
     #define BACKSPACE 127
 
@@ -19,7 +18,7 @@
         time_t timestamp; // timestamp of typing
     }typeText;
     
-    typedef struct levelData{
+    typedef struct GameData{
         typeText *text; // text
         uint32_t len; // text lenght
         uint32_t pos; // current position
@@ -27,8 +26,9 @@
         uint32_t right; // number of correct key presses
         float accuracy; // player accuracy
         float WPM; // words per minute
-    }levelData;
+    }GameData;
 
-    void GL_menu();
+    void GL_Menu();
+    void GL_Play(GameData *gData);
 
 #endif

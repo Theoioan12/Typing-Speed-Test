@@ -8,21 +8,6 @@ int i, linePos;
             wprintw(stdscr, "%c", wListSearch[currentPos].pContent[i]);
     }
 
-int input;
-    while(1){
-        input = getch();
-        fprintf(w, "%d ", input);
-        printw("%d ", input);
-        if(input == KEY_UP)
-            printw("Play\n");
-        /*
-        if(input == ESC)
-            break;
-        if(input == ENTER)
-            printw("Play\n");
-        */
-    }
-
 void print(){
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);

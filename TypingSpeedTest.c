@@ -3,7 +3,7 @@
 void NCURSES_init();
 void NCURSES_free();
 
-void menu();
+void menu(GameData **database);
 void run();
 
 int main(){
@@ -12,7 +12,7 @@ int main(){
 
     return 0;
 }
-// Initialize ncurses screen
+/* Initialize ncurses screen */
 void NCURSES_init(){
     // Initialize screen
     initscr();
@@ -27,26 +27,34 @@ void NCURSES_init(){
     // Wrong color pair
     init_pair(2, COLOR_WHITE, COLOR_RED);
 }
-// Free ncruses screen
+/* Free ncruses screen */
 void NCURSES_free(){
     // Free win
     endwin();
 }
-// Run app
+/* Initialize game database */
+GameData **Database_setup(){
+    GameData **database;
+    database = (GameData**)malloc(sizeof(GameData*));
+    return database;
+}
+/* Run app */
 void run(){
     NCURSES_init();
-    menu();
+    srand(time(NULL));
+    GameData **database = Database_setup();
+    menu(database);
     NCURSES_free();
 }
-// App's main menu
-void menu(){
+/* App's main menu */
+void menu(GameData **database){
     // Print menu
-    GL_menu();
+    GL_Menu();
     // Read input
     int input;
     while(1){
         input = getch();
-        if(input == ESC)
+        if(input == 'q' || input == 'Q')
             break;
         if(input == ENTER)
             printw("Play\n");
