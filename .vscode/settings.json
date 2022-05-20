@@ -2,6 +2,7 @@
     "files.associations": {
         "graphicslib.h": "c",
         "inttypes.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "time.h": "c"
     }
 }

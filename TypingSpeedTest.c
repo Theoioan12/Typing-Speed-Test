@@ -2,14 +2,16 @@
 
 void NCURSES_init();
 void NCURSES_free();
-
-void menu(GameData **database);
+Database *Database_setup();
+int Database_read(GameData *item, FILE *read);
+void *Database_free(Database *database);
+void menu(Database *database);
 void run();
 
 int main(){
     // Start app
     run();
-
+    
     return 0;
 }
 /* Initialize ncurses screen */
@@ -33,21 +35,97 @@ void NCURSES_free(){
     endwin();
 }
 /* Initialize game database */
-GameData **Database_setup(){
-    GameData **database;
-    database = (GameData**)malloc(sizeof(GameData*));
+Database *Database_setup(){
+    // Open file
+    FILE *read = fopen(DATABASE_NAME, "rt");
+    if(read == NULL)
+        return NULL;
+    // Initilize database
+    Database *database;
+    database = (Database*)malloc(sizeof(Database));
+    if(database == NULL){
+        fclose(read);
+        return NULL;
+    }
+    int nr_items;
+    int i;
+    // Read number of paragraphs
+    fscanf(read, "%d", &nr_items);
+    database->nr_items = nr_items;
+    // Initialize paragraphs array
+    database->arr = (GameData*)malloc(nr_items * sizeof(GameData));
+    if(database->arr == NULL){
+        free(database);
+        fclose(read);
+        return NULL;
+    }
+    // Read every paragraph from database
+    for(i = 0; i < nr_items; i++){
+        if(Database_read(&(database->arr[i]), read) == -1){
+            database->nr_items = i;
+            database = Database_free(database);
+            break;
+        }
+    }
+    // Close file
+    fclose(read);
+
     return database;
 }
+/* Read paragraph */
+int Database_read(GameData *item, FILE *read){
+    char ch;
+    int len;
+    int i;
+    // Read text len
+    fscanf(read, "%d", &len);
+    item->len = len;
+    // Initialize text
+    item->text = (typeText*)malloc(len * sizeof(typeText));
+    if(item->text == NULL)
+        return -1;
+    // Read characters
+    fgetc(read);
+    for(i = 0; i < len; i++){
+        fscanf(read, "%c", &ch);
+        item->text[i].ch = ch;
+        item->text[i].status = 0;
+    }
+    item->pos = 0;
+    item->nr_tries = 0;
+    item->right = 0;
+    item->accuracy = (float)0;
+    item->WPM = (float)0;
+
+    return 0;
+}
+/* Free database */
+void *Database_free(Database *database){
+    int i;
+    for(i = 0; i < database->nr_items; i++)
+        free(database->arr[i].text);
+    free(database->arr);
+    free(database);
+    return NULL;
+}
+
+
+
 /* Run app */
 void run(){
     NCURSES_init();
     srand(time(NULL));
-    GameData **database = Database_setup();
+    Database *database = Database_setup();
+    if(database == NULL){
+        NCURSES_free();
+        return;
+    }
     menu(database);
+    database = Database_free(database);
     NCURSES_free();
 }
 /* App's main menu */
-void menu(GameData **database){
+void menu(Database *database){
     // Print menu
     GL_Menu();
     // Read input

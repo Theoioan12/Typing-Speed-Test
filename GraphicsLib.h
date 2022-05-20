@@ -3,7 +3,6 @@
 
     #include <stdlib.h>
     #include <string.h>
-    #include <inttypes.h>
     #include <time.h>
     #include <ncurses.h>
 
@@ -12,21 +11,31 @@
     #define WHITESPACE 32
     #define BACKSPACE 127
 
+    // Debug
+    #define printnl printf("\n")
+    #define sprint(x) printf("%d ", (x))
+    #define nprint(x) printf("%d\n", (x))
+
     typedef struct typeText{
         char ch; // current letter
-        int8_t status; // letter status
+        char status; // letter status
         time_t timestamp; // timestamp of typing
     }typeText;
     
     typedef struct GameData{
         typeText *text; // text
-        uint32_t len; // text lenght
-        uint32_t pos; // current position
-        uint32_t nr_tries; // number of key presses
-        uint32_t right; // number of correct key presses
+        unsigned int len; // text lenght
+        unsigned int pos; // current position
+        unsigned int nr_tries; // number of key presses
+        unsigned int right; // number of correct key presses
         float accuracy; // player accuracy
         float WPM; // words per minute
     }GameData;
+
+    typedef struct Database{
+        GameData *arr;
+        int nr_items;
+    }Database;
 
     void GL_Menu();
     void GL_Play(GameData *gData);
