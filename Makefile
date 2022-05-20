@@ -5,4 +5,4 @@ build:
 clear:
 	rm TypingSpeedTest
 run:
-	valgrind -s ./TypingSpeedTest
+	valgrind ./TypingSpeedTest
