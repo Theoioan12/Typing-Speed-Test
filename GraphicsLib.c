@@ -18,5 +18,20 @@ void GL_Menu(){
 }
 /* Print text at current state */
 void GL_Play(GameData *paragraph){
-
+    unsigned int len = paragraph->len;
+    int yMax, xMax;
+    int i;
+    // Clear stdscr
+    clear();
+    // Set color to default
+    attron(COLOR_PAIR(0));
+    // Print border
+    box(stdscr, 0, 0); // Might remove!
+    // Get screen size
+    getmaxyx(stdscr, yMax, xMax);
+    // Go to the starting printing point
+    move(10, 10);
+    for(i = 0; i < len; i++){
+        printw("%c", paragraph->text[i].ch);
+    }
 }

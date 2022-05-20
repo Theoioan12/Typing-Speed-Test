@@ -25,7 +25,6 @@
     typedef struct GameData{
         typeText *text; // text
         unsigned int len; // text lenght
-        unsigned int pos; // current position
         unsigned int nr_tries; // number of key presses
         unsigned int right; // number of correct key presses
         float accuracy; // player accuracy

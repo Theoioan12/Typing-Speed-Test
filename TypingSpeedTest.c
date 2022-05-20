@@ -94,7 +94,6 @@ int Database_read(GameData *paragraph, FILE *read){
         paragraph->text[i].ch = ch;
         paragraph->text[i].status = 0;
     }
-    paragraph->pos = 0;
     paragraph->nr_tries = 0;
     paragraph->right = 0;
     paragraph->accuracy = (float)0;
@@ -143,5 +142,12 @@ void menu(Database *database){
 }
 
 void play(GameData *paragraph){
-    printw("Play%d\n", paragraph->len);
+    unsigned int len = paragraph->len;
+    unsigned int pos = 0;
+    GL_Play(paragraph);
+    while(pos != len){
+        break;
+        (pos)++;
+    }
+    
 }
