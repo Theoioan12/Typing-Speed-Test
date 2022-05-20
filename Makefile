@@ -1,7 +1,7 @@
 all: clear build run
 
 build:
-	gcc TypingSpeedTest.c -o TypingSpeedTest -lncurses
+	gcc TypingSpeedTest.c GraphicsLib.c -o TypingSpeedTest -lncurses
 clear:
 	rm TypingSpeedTest
 run:
