@@ -5,13 +5,16 @@ void NCURSES_free();
 Database *Database_setup();
 int Database_read(GameData *item, FILE *read);
 void *Database_free(Database *database);
+void play(GameData *paragraph);
 void menu(Database *database);
 void run();
 
 int main(){
     // Start app
     run();
-    
+    //test
+    // Database *d = Database_setup();
+    // Database_free(d);
     return 0;
 }
 /* Initialize ncurses screen */
@@ -73,29 +76,29 @@ Database *Database_setup(){
     return database;
 }
 /* Read paragraph */
-int Database_read(GameData *item, FILE *read){
+int Database_read(GameData *paragraph, FILE *read){
     char ch;
     int len;
     int i;
     // Read text len
     fscanf(read, "%d", &len);
-    item->len = len;
+    paragraph->len = len;
     // Initialize text
-    item->text = (typeText*)malloc(len * sizeof(typeText));
-    if(item->text == NULL)
+    paragraph->text = (typeText*)malloc(len * sizeof(typeText));
+    if(paragraph->text == NULL)
         return -1;
     // Read characters
     fgetc(read);
     for(i = 0; i < len; i++){
         fscanf(read, "%c", &ch);
-        item->text[i].ch = ch;
-        item->text[i].status = 0;
+        paragraph->text[i].ch = ch;
+        paragraph->text[i].status = 0;
     }
-    item->pos = 0;
-    item->nr_tries = 0;
-    item->right = 0;
-    item->accuracy = (float)0;
-    item->WPM = (float)0;
+    paragraph->pos = 0;
+    paragraph->nr_tries = 0;
+    paragraph->right = 0;
+    paragraph->accuracy = (float)0;
+    paragraph->WPM = (float)0;
 
     return 0;
 }
@@ -135,6 +138,10 @@ void menu(Database *database){
         if(input == 'q' || input == 'Q')
             break;
         if(input == ENTER)
-            printw("Play\n");
+            play(&(database->arr[rand() % (database->nr_items)]));
     }
+}
+
+void play(GameData *paragraph){
+    printw("Play%d\n", paragraph->len);
 }

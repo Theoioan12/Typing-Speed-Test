@@ -17,6 +17,6 @@ void GL_Menu(){
     mvprintw(yMax / 2, xMax / 2 - 11, "Enter - Play | Q - Quit");
 }
 /* Print text at current state */
-void GL_Play(GameData *gData){
+void GL_Play(GameData *paragraph){
 
 }
