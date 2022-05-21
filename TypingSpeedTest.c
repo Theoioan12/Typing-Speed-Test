@@ -14,6 +14,7 @@ void run();
 int main(){
     // Start app
     run();
+    
     return 0;
 }
 /* Initialize ncurses screen */
