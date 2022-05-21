@@ -83,12 +83,10 @@ void GL_Results(GameData *paragraph){
     // Calculate time
     time = paragraph->stop_t - paragraph->start_t;
     // Print results
-    mvprintw(yMax / 5, xMax / 10, "---Results---");
-    mvprintw(yMax / 5 + 2 , xMax / 10, "Speed: %.1f WPM", paragraph->WPM);
-    mvprintw(yMax / 5 + 3 , xMax / 10, "Time: %ld:%.2ld", time / 60, time % 60);
-    mvprintw(yMax / 5 + 4 , xMax / 10, "Accuracy: %.1f%%", paragraph->accuracy);
-    //printw("\n\n  WPM: %.2f\n\n  ACC: %.2f\n\n", paragraph->WPM, paragraph->accuracy);
+    mvprintw(yMax / 5, xMax / 2 - 7, "---Results---");
+    mvprintw(yMax / 5 + 2 , xMax / 2 - 7, "Speed: %.1f WPM", paragraph->WPM);
+    mvprintw(yMax / 5 + 3 , xMax / 2 - 7, "Time: %ld:%.2ld", time / 60, time % 60);
+    mvprintw(yMax / 5 + 4 , xMax / 2 - 7, "Accuracy: %.1f%%", paragraph->accuracy);
     // Print commands
     mvprintw(3 * yMax / 4, xMax / 2 - 17, "Enter - Play Again | Q - Main Menu");
-
 }
