@@ -14,9 +14,6 @@ void run();
 int main(){
     // Start app
     run();
-    //test
-    // Database *d = Database_setup();
-    // Database_free(d);
     return 0;
 }
 /* Initialize ncurses screen */
