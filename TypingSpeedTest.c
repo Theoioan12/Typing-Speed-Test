@@ -5,6 +5,8 @@ void NCURSES_free();
 int Database_read(GameData *item, FILE *read);
 void *Database_free(Database *database);
 Database *Database_setup();
+void Paragraph_reset(GameData *item);
+void results(GameData *paragraph);
 void play(GameData *paragraph);
 void menu(Database *database);
 void run();
@@ -114,9 +116,20 @@ void *Database_free(Database *database){
     free(database);
     return NULL;
 }
-
-
-
+/* Reset paragraph*/
+void Paragraph_reset(GameData *paragraph){
+    unsigned int len = paragraph->len;
+    int i;
+    for(i = 0; i < len; i++){
+        paragraph->text[i].status = 1;
+    }
+    paragraph->nr_tries = 0;
+    paragraph->right = 0;
+    paragraph->start_t = 0;
+    paragraph->stop_t = 0;
+    paragraph->accuracy = (float)0;
+    paragraph->WPM = (float)0;
+}
 /* Run app */
 void run(){
     NCURSES_init();
@@ -132,19 +145,23 @@ void run(){
 }
 /* App's main menu */
 void menu(Database *database){
-    // Print menu
-    GL_Menu();
+    int random;
     // Read input
     int input;
     while(1){
+        // Print menu
+        GL_Menu();
         input = getch();
         if(input == 'q' || input == 'Q')
             break;
-        if(input == ENTER)
-            play(&(database->arr[rand() % (database->nr_items)]));
+        if(input == ENTER){
+            random = rand() % (database->nr_items);
+            play(&(database->arr[random]));
+            Paragraph_reset(&(database->arr[random]));
+        }
     }
 }
-
+/* Play screen */
 void play(GameData *paragraph){
     unsigned int len = paragraph->len;
     unsigned int pos = 0;
@@ -152,13 +169,26 @@ void play(GameData *paragraph){
     int i;
     char ch;
     // Main loop
-    while(pos != len){
+    while(pos != len + 1){
+        // Print text
         GL_Play(paragraph);
         ch = getch();
+        // Get start time
         if(paragraph->start_t == 0)
             paragraph->start_t = time(NULL);
         (paragraph->nr_tries)++;
-
+        // Special case for the last character
+        if(pos == len){
+            // Delete character
+            if(ch == BACKSPACE){
+                (paragraph->nr_tries)--;
+                pos--;
+                paragraph->text[pos].status = 1;
+                continue;
+            }
+            else
+                continue; 
+        }
         // Delete character
         if(ch == BACKSPACE){
             (paragraph->nr_tries)--;
@@ -168,7 +198,6 @@ void play(GameData *paragraph){
             paragraph->text[pos].status = 1;
             continue;
         }
-
         // Check match
         if(ch == paragraph->text[pos].ch){
             paragraph->text[pos].status = 2;
@@ -176,7 +205,6 @@ void play(GameData *paragraph){
         }
         else
             paragraph->text[pos].status = 3;
-
         // Test if the text have a typo
         if(pos == len - 1){
             typo = 0;
@@ -186,17 +214,34 @@ void play(GameData *paragraph){
                     break;
                 }
             }
-            if(typo == 1)
-                pos--;
+            if(typo == 0)
+                break;
         }
         pos++;
     }
-    // Process results
+    // Get stop time
     paragraph->stop_t = time(NULL);
+    // Process results
     paragraph->WPM = ((float)len * 12) / (paragraph->stop_t - paragraph->start_t);
     paragraph->accuracy = ((float)paragraph->right / paragraph->nr_tries) * 100;
-    // test
-    printw("\n\nWPM: %.2f\n\nACURRACY: %.2f", paragraph->WPM, paragraph->accuracy);
-    ch = getch();
-    clear();
+    // Go to restults screen
+    results(paragraph);
+}
+/* Results menu */
+void results(GameData *paragraph){
+    // Print results
+    GL_Results(paragraph);
+    // Read input
+    int input;
+    while(1){
+        input = getch();
+        if(input == 'q' || input == 'Q'){
+            break;
+        }
+        if(input == ENTER){
+            Paragraph_reset(paragraph);
+            play(paragraph);
+            break;
+        }
+    }
 }

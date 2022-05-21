@@ -17,7 +17,7 @@ void GL_Menu(){
     mvprintw(yMax / 2, xMax / 2 - 11, "Enter - Play | Q - Quit");
 }
 /* Print text at current state */
-void GL_Play(GameData *paragraph){
+int GL_Play(GameData *paragraph){
     unsigned int len = paragraph->len;
     int yMax, xMax;
     int i;
@@ -65,4 +65,30 @@ void GL_Play(GameData *paragraph){
         // Print letter
         printw("%c", paragraph->text[i].ch);
     }
+    // Return current line
+    return lin;
+}
+/* Print results of the test */
+void GL_Results(GameData *paragraph){
+    int yMax, xMax;
+    time_t time;
+    // Clear stdscr
+    clear();
+    // Set color to default
+    attron(COLOR_PAIR(1));
+    // Print border
+    box(stdscr, 0, 0);
+    // Get screen size
+    getmaxyx(stdscr, yMax, xMax);
+    // Calculate time
+    time = paragraph->stop_t - paragraph->start_t;
+    // Print results
+    mvprintw(yMax / 5, xMax / 10, "---Results---");
+    mvprintw(yMax / 5 + 2 , xMax / 10, "Speed: %.1f WPM", paragraph->WPM);
+    mvprintw(yMax / 5 + 3 , xMax / 10, "Time: %ld:%.2ld", time / 60, time % 60);
+    mvprintw(yMax / 5 + 4 , xMax / 10, "Accuracy: %.1f%%", paragraph->accuracy);
+    //printw("\n\n  WPM: %.2f\n\n  ACC: %.2f\n\n", paragraph->WPM, paragraph->accuracy);
+    // Print commands
+    mvprintw(3 * yMax / 4, xMax / 2 - 17, "Enter - Play Again | Q - Main Menu");
+
 }

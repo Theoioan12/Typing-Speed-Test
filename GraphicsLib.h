@@ -38,6 +38,7 @@
     }Database;
 
     void GL_Menu();
-    void GL_Play(GameData *paragraph);
+    int GL_Play(GameData *paragraph);
+    void GL_Results(GameData *paragraph);
 
 #endif
