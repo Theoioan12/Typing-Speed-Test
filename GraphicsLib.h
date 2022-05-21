@@ -8,13 +8,9 @@
 
     #define DATABASE_NAME "database.txt"
     #define ENTER 10
+    #define ESC 27
     #define WHITESPACE 32
     #define BACKSPACE 127
-
-    // Debug
-    #define printnl printf("\n")
-    #define sprint(x) printf("%d ", (x))
-    #define nprint(x) printf("%d\n", (x))
 
     typedef struct typeText{
         char ch; // current letter
@@ -38,7 +34,7 @@
     }Database;
 
     void GL_Menu();
-    int GL_Play(GameData *paragraph);
+    void GL_Play(GameData *paragraph);
     void GL_Results(GameData *paragraph);
 
 #endif

@@ -173,6 +173,9 @@ void play(GameData *paragraph){
         // Print text
         GL_Play(paragraph);
         ch = getch();
+        // Return to menu
+        if(ch == ESC)
+            return;
         // Get start time
         if(paragraph->start_t == 0)
             paragraph->start_t = time(NULL);

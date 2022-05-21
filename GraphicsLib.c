@@ -17,7 +17,7 @@ void GL_Menu(){
     mvprintw(yMax / 2, xMax / 2 - 11, "Enter - Play | Q - Quit");
 }
 /* Print text at current state */
-int GL_Play(GameData *paragraph){
+void GL_Play(GameData *paragraph){
     unsigned int len = paragraph->len;
     int yMax, xMax;
     int i;
@@ -65,8 +65,10 @@ int GL_Play(GameData *paragraph){
         // Print letter
         printw("%c", paragraph->text[i].ch);
     }
-    // Return current line
-    return lin;
+    // Set color to default
+    attron(COLOR_PAIR(1));
+    // Print command
+    mvprintw(3 * yMax / 4, xMax / 2 - 10, "ESC - Escape To Menu");
 }
 /* Print results of the test */
 void GL_Results(GameData *paragraph){
