@@ -2,9 +2,9 @@
 
 void NCURSES_init();
 void NCURSES_free();
-Database *Database_setup();
 int Database_read(GameData *item, FILE *read);
 void *Database_free(Database *database);
+Database *Database_setup();
 void play(GameData *paragraph);
 void menu(Database *database);
 void run();
@@ -94,10 +94,12 @@ int Database_read(GameData *paragraph, FILE *read){
     for(i = 0; i < len; i++){
         fscanf(read, "%c", &ch);
         paragraph->text[i].ch = ch;
-        paragraph->text[i].status = 0;
+        paragraph->text[i].status = 1;
     }
     paragraph->nr_tries = 0;
     paragraph->right = 0;
+    paragraph->start_t = 0;
+    paragraph->stop_t = 0;
     paragraph->accuracy = (float)0;
     paragraph->WPM = (float)0;
 
@@ -146,10 +148,55 @@ void menu(Database *database){
 void play(GameData *paragraph){
     unsigned int len = paragraph->len;
     unsigned int pos = 0;
-    GL_Play(paragraph);
+    int typo;
+    int i;
+    char ch;
+    // Main loop
     while(pos != len){
-        break;
-        (pos)++;
+        GL_Play(paragraph);
+        ch = getch();
+        if(paragraph->start_t == 0)
+            paragraph->start_t = time(NULL);
+        (paragraph->nr_tries)++;
+
+        // Delete character
+        if(ch == BACKSPACE){
+            (paragraph->nr_tries)--;
+            if(pos == 0)
+                continue;
+            pos--;
+            paragraph->text[pos].status = 1;
+            continue;
+        }
+
+        // Check match
+        if(ch == paragraph->text[pos].ch){
+            paragraph->text[pos].status = 2;
+            (paragraph->right)++;
+        }
+        else
+            paragraph->text[pos].status = 3;
+
+        // Test if the text have a typo
+        if(pos == len - 1){
+            typo = 0;
+            for(i = 0; i < len; i++){
+                if(paragraph->text[i].status == 3){
+                    typo = 1;
+                    break;
+                }
+            }
+            if(typo == 1)
+                pos--;
+        }
+        pos++;
     }
-    
+    // Process results
+    paragraph->stop_t = time(NULL);
+    paragraph->WPM = ((float)len * 12) / (paragraph->stop_t - paragraph->start_t);
+    paragraph->accuracy = ((float)paragraph->right / paragraph->nr_tries) * 100;
+    // test
+    printw("\n\nWPM: %.2f\n\nACURRACY: %.2f", paragraph->WPM, paragraph->accuracy);
+    ch = getch();
+    clear();
 }

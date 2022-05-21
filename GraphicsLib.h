@@ -19,7 +19,6 @@
     typedef struct typeText{
         char ch; // current letter
         char status; // letter status
-        time_t timestamp; // timestamp of typing
     }typeText;
     
     typedef struct GameData{
@@ -27,6 +26,8 @@
         unsigned int len; // text lenght
         unsigned int nr_tries; // number of key presses
         unsigned int right; // number of correct key presses
+        time_t start_t; // start timestamp
+        time_t stop_t;  // stop timestamp
         float accuracy; // player accuracy
         float WPM; // words per minute
     }GameData;

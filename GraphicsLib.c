@@ -21,6 +21,8 @@ void GL_Play(GameData *paragraph){
     unsigned int len = paragraph->len;
     int yMax, xMax;
     int i;
+    int lin, col;
+    char color = 1;
     // Clear stdscr
     clear();
     // Set color to default
@@ -29,13 +31,38 @@ void GL_Play(GameData *paragraph){
     box(stdscr, 0, 0); // Might remove!
     // Get screen size
     getmaxyx(stdscr, yMax, xMax);
-    // Go to the starting printing point
-    move(yMax / 5, xMax / 10);
+    // Save initial print position
+    lin = yMax / 5;
+    col = xMax / 7 + 4;
+    // Go to the print position
+    move(lin, col);
     for(i = 0; i < len; i++){
+        if(paragraph->text[i].status != 1 && color == 3){
+            // Letter placement
+            col++;
+            if(paragraph->text[i].ch == ' '){
+                if(col > (4 * xMax) / 5){
+                    col = xMax / 7;
+                    lin++;
+                    move(lin, col);
+                }
+            }
+            // Print letter
+            printw("%c", paragraph->text[i].ch);
+            continue;
+        }
+        color = paragraph->text[i].status;
+        attron(COLOR_PAIR(color));
+        // Letter placement
+        col++;
+        if(paragraph->text[i].ch == ' '){
+            if(col > (4 * xMax) / 5){
+                col = xMax / 7;
+                lin++;
+                move(lin, col);
+            }
+        }
+        // Print letter
         printw("%c", paragraph->text[i].ch);
-        if(i == 50)
-            attron(COLOR_PAIR(2));
-        if(i == 100)
-            attron(COLOR_PAIR(3));
     }
 }
