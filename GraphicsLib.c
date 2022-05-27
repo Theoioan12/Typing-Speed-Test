@@ -1,5 +1,6 @@
 #include "GraphicsLib.h"
 
+
 /* Print menu */
 void GL_Menu(){
     int yMax, xMax;
